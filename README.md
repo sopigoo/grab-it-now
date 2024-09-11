@@ -1,5 +1,7 @@
 # Grab It Now! (Tugas Individu PBP)
 
+Deployed at: http://siti-shofi-grabitnow.pbp.cs.ui.ac.id
+
 Nama : Siti Shofi Nadhifa
 
 NPM : 2306152172
