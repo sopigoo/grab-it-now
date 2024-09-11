@@ -1,6 +1,6 @@
 # Grab It Now! (Tugas Individu PBP)
 
-Deployed at: http://siti-shofi-grabitnow.pbp.cs.ui.ac.id
+Deployed at: http://siti-shofi-grabitnow1.pbp.cs.ui.ac.id
 
 Nama : Siti Shofi Nadhifa
 
@@ -26,7 +26,7 @@ urllib3
 - Menjalankan perintah `django-admin startproject grab_it_now .` untuk membuat proyek Django bernama `grab_it_now`.
 - Menambahkan daftar host pada `ALLOWED_HOSTS` di `settings.py` dengan local host dan pws untuk keperluan deployment
 ```python
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "siti-shofi-grabitnow.pbp.cs.ui.ac.id"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "siti-shofi-grabitnow1.pbp.cs.ui.ac.id"]
 ```
 - Menambahkan file `.gitignore` dan diisi dengan berkas-berkas dan direktori-direktori yang harus diabaikan oleh Git.
 ```
@@ -222,7 +222,7 @@ git push -u origin main
 - Mengisi `Project Name` dengan `grabitnow`, lalu menekan tombol `Create New Project`.
 - Menambahkan url deployment PWS pada `ALLOWED_HOSTS` di `settings.py`.
 ```python
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "siti-shofi-grabitnow.pbp.cs.ui.ac.id"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "siti-shofi-grabitnow1.pbp.cs.ui.ac.id"]
 ```
 - Menjalankan perintah-perintah yang ada pada informasi `Project Command` pada PWS. Ganti perintah `git remote add pws <link>` menjadi `git remote set-url pws <link>` jika sebelumnya sudah pernah membuat projek pada PWS.
 - Menjalankan perintah `git branch -M main` untuk kembali mengubah branch utama menjadi `main`.
