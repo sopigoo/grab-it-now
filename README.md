@@ -227,7 +227,8 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1", "siti-shofi-grabitnow.pbp.cs.ui.ac.id
 - Menggunakan perintah `git push pws main::master` untuk melakukan push pada setiap perubahan yang dilakukan.
 
 ## 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
-![User Request Flow](grab-it-now/images/user_request_flow.png)
+![User Request Flow](/images/user_request_flow.png)
+
 Kaitan antara urls.py, views.py, models.py, dan berkas html:
 - Ketika user/client pertama kali mengirim request, Django akan memeriksa `urls.py` untuk mencocokkan URL yang diminta dengan yang terdaftar. `urls.py` sendiri bertugas untuk memetakan URL ke fungsi atau class di `views.py`.
 - Apabila URL yang diminta cocok degan yang ada pada `urls.py`, Django akan menjalankan fungsi `show_main` pada `views.py`.
