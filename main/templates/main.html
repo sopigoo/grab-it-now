@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 <h1>Grab It Now!</h1>
 
 <h5>Name: </h5>
@@ -9,27 +11,35 @@
 
 <h2>List Produk</h2>
 
-<ol>
-{% for product in products %}
-    <li>
-        <h5>Nama produk: </h5>
-        <p>{{ product.name }}</p>
-        
-        <h5>Harga: </h5>
-        <p>Rp. {{ product.price }}</p>
-        
-        <h5>Deskripsi: </h5>
-        <p>{{ product.description }}</p>
-        
-        <h5>Stok: </h5>
-        <p>{{ product.stock }}</p>
-        
-        <h5>Kategori: </h5>
-        <p>{{ product.category }}</p>
-        
-        <h5>Rating: </h5>
-        <p>{{ product.rating }}</p>
-        <hr>
-    </li>
-{% endfor %}
-</ol>
+{% if not products %}
+<p>Belum ada data produk pada Grab It Now!.</p>
+{% else %}
+<table>
+  <tr>
+    <th>Nama Produk</th>
+    <th>Harga</th>
+    <th>Deskripsi</th>
+    <th>Stok</th>
+    <th>Kategori</th>
+    <th>Rating</th>
+  </tr>
+
+  {% for product in products %}
+  <tr>
+    <td>{{product.name}}</td>
+    <td>{{product.price}}</td>
+    <td>{{product.description}}</td>
+    <td>{{product.stock}}</td>
+    <td>{{product.category}}</td>
+    <td>{{product.rating}}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<br />
+
+<a href="{% url 'main:add_product' %}">
+  <button>Add New Product</button>
+</a>
+{% endblock content %}
