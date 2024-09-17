@@ -1,5 +1,5 @@
 from django.urls import path
-from main.views import show_main, add_product, show_xml, show_json, show_xml_by_id, show_json_by_id
+from main.views import show_main, add_product, show_xml, show_json, show_xml_by_id, show_json_by_id, delete_product
 
 app_name = 'main'
 
@@ -10,4 +10,5 @@ urlpatterns = [
     path('json/', show_json, name='show_json'),
     path('xml/<str:id>/', show_xml_by_id, name='show_xml_by_id'),
     path('json/<str:id>/', show_json_by_id, name='show_json_by_id'),
+    path('delete-product/<uuid:id>/', delete_product, name='delete_product'),
 ]

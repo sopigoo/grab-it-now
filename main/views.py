@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from main.forms import ProductForm
 from main.models import Product
 from django.http import HttpResponse
@@ -25,6 +25,11 @@ def add_product(request):
 
     context = {'form': form}
     return render(request, "add_product.html", context)
+
+def delete_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    product.delete()
+    return redirect('main:show_main')
 
 def show_xml(request):
     data = Product.objects.all()

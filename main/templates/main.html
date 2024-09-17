@@ -22,6 +22,7 @@
     <th>Stok</th>
     <th>Kategori</th>
     <th>Rating</th>
+    <th>Aksi</th>
   </tr>
 
   {% for product in products %}
@@ -32,6 +33,11 @@
     <td>{{product.stock}}</td>
     <td>{{product.category}}</td>
     <td>{{product.rating}}</td>
+    <td>
+        <a href="{% url 'main:delete_product' product.id %}">
+          <button>Delete</button>
+        </a>
+      </td>
   </tr>
   {% endfor %}
 </table>
