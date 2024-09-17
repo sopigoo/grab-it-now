@@ -1,6 +1,6 @@
 # Grab It Now! (Tugas Individu PBP)
 
-Deployed at: http://siti-shofi-grabitnow1.pbp.cs.ui.ac.id
+Deployed at: http://siti-shofi-grabitnow.pbp.cs.ui.ac.id
 
 Nama : Siti Shofi Nadhifa
 
