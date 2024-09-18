@@ -3,10 +3,450 @@
 Deployed at: http://siti-shofi-grabitnow.pbp.cs.ui.ac.id
 
 Nama : Siti Shofi Nadhifa
-
+<br>
 NPM : 2306152172
-
+<br>
 Kelas : PBP D
+
+<details>
+<summary>Tugas 3</summary>
+
+## 1. Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
+Data delivery dalam perimplementasian sebuah platform diperlukan untuk mengirimkan dan menerima informasi antara komponen yang berbeda, seperti user dan server, atau server dan database. Dengan interaksi yang dinamis dan langsung/real-time pada platform, pengguna bisa mendapatkan data yang relevan dan sistem bisa merespons permintaan dari pengguna. Dalam web, data delivery digunakan seperti ketika pengguna mengisi form atau menerima data yang ditampilkan.
+
+## 2. Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?
+Menurut saya, JSON lebih baik dari XML karena beberapa alasan, yaitu:
+- Lebih ringan:
+JSON memiliki struktur yang lebih ringkas dan memiliki ukuran file yang lebih kecil dibandingkan dengan XML, sehingga proses pengiriman data lebih cepat dan mengurangi bandwidth yang dibutuhkan.
+- Lebih gampang dibaca:
+Sintaks JSON lebih lebih sederhana dan lebih mudah dibaca oleh manusia dibanding sintaks XML yang menggunakan banyak tag dan membutuhkan referensi entitas untuk beberapa karakter, sehingga lebih sulit untuk dibaca. 
+- Lebih mudah diuraikan:
+Penguraian (parsing) data pada JSON cepat dan efisien sedangkan XML membutuhkan lebih banyak langkah karena strukturnya yang lebih kompleks, sehingga JSON lebih cocok untuk menangani data dengan volume yang besar.
+- Integrasi langsung dengan JavaScript:
+JSON dipetakan langsung ke objek JavaScript tanpa konversi yang rumit, sehingga integrasi dengan aplikasi dan API JavaScript dapat lebih lancar.
+
+## 3. Jelaskan fungsi dari method `is_valid()` pada form Django dan mengapa kita membutuhkan method tersebut?
+Pada form Django, method `is_valid()` digunakan untuk memeriksa apakah data yang dikirimkan oleh user sesuai dengan aturan validasi yang sudah ditetapkan untuk setiap field pada form sesuai dengan field pada model. Pengecekan ini dibutuhkan agar kita dapat menjaga kualitas data dengan memastikan bahwa data yang disimpan hanya data yang valid dan meningkatkan keamanan dengan mencegah pengiriman data yang tidak sesuai atau berbahaya. Selain itu, dengan penggunaan method `is_valid()`, kita juga dapat memberikan umpan balik jika terjadi kesalahan pengisian data pada form oleh user, sehingga user bisa memperbaiki input yang diberikan.
+
+## 4. Mengapa kita membutuhkan `csrf_token` saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan `csrf_token` pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang?
+`csrf_token` dibutuhkan untuk mencegah serangan CSRF, di mana penyerang mencoba membuat pengguna sah melakukan hal yang tidak diinginkan. `csrf_token` diperiksa oleh server untuk memverifikasi bahwa permintaan atau pengisian data pada form dikirim oleh pengguna yang sah atau diautentikasi, bukan dari sumber yang berbahaya. Tanpa adanya `csrf_token`, situs akan menjadi rentan terhadap serangan CSRF, di mana penyerang dapat membuat skrip berbahaya yang dapat membuat user melakukan tindakan yang tidak mereka sadari, seperti mengirim permintaan ke server yang terlihat sah namun sebenarnya berbahaya.
+
+## 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+1. Membuat kerangka views
+- Membuat direktori `templates` pada direktori utama `grab-it-now`, kemudian membuat sebuah berkas baru bernama `base.html`.
+- Mengisi berkas `base.html` sebagai berikut:
+```html
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block meta %} {% endblock meta %}
+  </head>
+
+  <body>
+    {% block content %} {% endblock content %}
+  </body>
+</html>
+```
+Tag `{% block %}` digunakan untuk mendefinisikan struktur dasar lalu kemudian mewarisi template nya. Nantinya template turunan dapat meng-extend template dasar tersebut dan mengisinya sesuai dengan kebutuhan.
+Tag `{% load static %}` memungkinkan untuk menyertakan file statis pada template.
+- Menambahkan path `templates` pada variabel `TEMPLATES` di `settings.py` yang menangani rendering template, sehingga Django dapat menemukan dan menggunakan berkas yang ada pada direktori templates untuk struktur halaman situs.
+```python
+...
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+...
+```
+- Menggunakan `base.html` sebagai template utama dengan mengubah isi pada `main.html` pada direktori `main/templates/`
+```html
+{% extends 'base.html' %}
+{% block content %}
+<h1>Grab It Now!</h1>
+
+<h5>Name: </h5>
+<p>{{ nama }}<p>
+<h5>NPM: </h5>
+<p>{{ npm }}<p>
+<h5>Class: </h5>
+<p>{{ class }}<p>
+
+<h2>List Produk</h2>
+
+{% if not products %}
+<p>Belum ada data produk pada Grab It Now!.</p>
+{% else %}
+<table>
+  <tr>
+    <th>Nama Produk</th>
+    <th>Harga</th>
+    <th>Deskripsi</th>
+    <th>Stok</th>
+    <th>Kategori</th>
+    <th>Rating</th>
+    <th>Aksi</th>
+  </tr>
+
+  {% for product in products %}
+  <tr>
+    <td>{{product.name}}</td>
+    <td>{{product.price}}</td>
+    <td>{{product.description}}</td>
+    <td>{{product.stock}}</td>
+    <td>{{product.category}}</td>
+    <td>{{product.rating}}</td>
+    <td>
+        <a href="{% url 'main:delete_product' product.id %}">
+          <button>Delete</button>
+        </a>
+      </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<br />
+
+<a href="{% url 'main:add_product' %}">
+  <button>Add New Product</button>
+</a>
+{% endblock content %}
+```
+`{% extends 'base.html' %}` menandakan bahwa saya menggunakan `base.html` sebagai template utama.
+
+2. Mengubah Primary Key menjadi UUID
+- Melakukan import uuid dan mendefinisikan field id sebagai UUID yang menjadi primary key untuk model Product
+```python
+import uuid
+from django.db import models
+
+class Product(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+    price = models.IntegerField()
+    description = models.TextField()
+    stock = models.IntegerField(default=0)
+    category = models.CharField(max_length=255)
+    rating = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return self.name
+```
+UUID membuat string unik (random objek) yang digunakan sebagai identifier untuk objek pada database.
+- Migrasi model dengan menjalankan perintah:
+```bash
+python3 manage.py makemigrations
+python3 manage.py migrate
+```
+
+3. Membuat Form Input Data dan Menampilkan Data pada HTML
+- Membuat berkas `forms.py` pada direktori `main` untuk membuat struktur form yang menerima Product baru.
+```python
+from django.forms import ModelForm
+from main.models import Product
+
+class ProductForm(ModelForm):
+    class Meta:
+        model = Product
+        fields = ["name", "price", "description", "stock", "category", "rating"]
+```
+- Menambahkan import `redirect` pada berkas `views.py` yang ada di direktori `main`
+```python
+from django.shortcuts import render, redirect
+from main.forms import ProductForm
+from main.models import Product
+```
+`redirect` mengarahkan pengguna ke URL tertentu setelah melakukan suatu tindakan.
+- Menambahkan fungsi `add_product` pada berkas `views.py` di direktori `main` yang menerima parameter `request`. Fungsi ini digunakan untuk menghasilkan form yang dapat menambahkan data Product ke database secara otomatis ketika data yang ada pada form di-submit.
+```python
+def add_product(request):
+    form = ProductForm(request.POST or None)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return redirect('main:show_main')
+
+    context = {'form': form}
+    return render(request, "add_product.html", context)
+```
+- Mengubah fungsi `show_main` pada berkas `views.py` menjadi seperti berikut:
+```python
+def show_main(request):
+    product_entries = Product.objects.all()
+
+    context = {
+        'nama': 'Siti Shofi Nadhifa',
+        'npm': '2306152172',
+        'class': 'PBP D',
+        'products': product_entries
+    }
+
+    return render(request, "main.html", context)
+```
+- Menambahkan import dan path URL ke fungsi `add_product` pada berkas `urls.py` di direktori `main`
+```python
+from django.urls import path
+from main.views import show_main, add_product
+
+app_name = 'main'
+
+urlpatterns = [
+    path('', show_main, name='show_main'),
+    path('add-product', add_product, name='add_product'),
+]
+```
+- Membuat berkas HTML baru pada direktori `main/templates` dengan nama `add_product.html`
+```html
+{% extends 'base.html' %} 
+{% block content %}
+<h1>Add New Product</h1>
+
+<form method="POST">
+  {% csrf_token %}
+  <table>
+    {{ form.as_table }}
+    <tr>
+      <td></td>
+      <td>
+        <input type="submit" value="Add Product" />
+      </td>
+    </tr>
+  </table>
+</form>
+
+{% endblock %}
+```
+- Menambahkan kode untuk menampilkan product dalam `{% block content %}` pada berkas `main.html` yang ada di direktori `main/templates`
+```html
+{% extends 'base.html' %}
+{% block content %}
+<h1>Grab It Now!</h1>
+...
+<h2>List Produk</h2>
+
+{% if not products %}
+<p>Belum ada data produk pada Grab It Now!.</p>
+{% else %}
+<table>
+  <tr>
+    <th>Nama Produk</th>
+    <th>Harga</th>
+    <th>Deskripsi</th>
+    <th>Stok</th>
+    <th>Kategori</th>
+    <th>Rating</th>
+  </tr>
+
+  {% for product in products %}
+  <tr>
+    <td>{{product.name}}</td>
+    <td>{{product.price}}</td>
+    <td>{{product.description}}</td>
+    <td>{{product.stock}}</td>
+    <td>{{product.category}}</td>
+    <td>{{product.rating}}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<br />
+
+<a href="{% url 'main:add_product' %}">
+  <button>Add New Product</button>
+</a>
+{% endblock content %}
+```
+- Menjalankan proyek Django dengan perintah `python3 manage.py runserver` untuk melakukan pengecekan web yang saya buat pada `http://localhost:8000/`
+
+4. Mengembalikan data dalam bentuk XML
+- Menambahkan import `HttpResponse` dan `Serializer` pada berkas `views.py` di direktori `main`
+```python
+from django.shortcuts import render, redirect
+from main.forms import ProductForm
+from main.models import Product
+from django.http import HttpResponse
+from django.core import serializers
+```
+- Membuat sebuah fungsi baru dengan nama `show_xml`, membuat variabel `data` untuk menyimpan hasil query dari data pada Product, serta menambahkan return function `HttpResponse` yang berisi data hasil query yang sudah diserialisasi menjadi XML menggunakan `serializers` dan parameter `content_type="application/xml"`
+```python
+def show_xml(request):
+    data = Product.objects.all()
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+```
+- Menambahkan import dan path URL ke fungsi `show_xml` pada berkas `urls.py` di direktori `main`
+```python
+from django.urls import path
+from main.views import show_main, add_product, show_xml
+
+app_name = 'main'
+
+urlpatterns = [
+    path('', show_main, name='show_main'),
+    path('add-product', add_product, name='add_product'),
+    path('xml/', show_xml, name='show_xml'),
+]
+```
+
+5. Mengembalikan data dalam bentuk JSON
+- Membuat sebuah fungsi baru dengan nama `show_json`, membuat variabel `data` untuk menyimpan hasil query dari data pada Product, serta menambahkan return function `HttpResponse` yang berisi data hasil query yang sudah diserialisasi menjadi JSON menggunakan `serializers` dan parameter `content_type="application/json"`
+```python
+def show_json(request):
+    data = Product.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+```
+- Menambahkan import dan path URL ke fungsi `show_json` pada berkas `urls.py` di direktori `main`
+```python
+from django.urls import path
+from main.views import show_main, add_product, show_xml, show_json
+
+app_name = 'main'
+
+urlpatterns = [
+    path('', show_main, name='show_main'),
+    path('add-product', add_product, name='add_product'),
+    path('xml/', show_xml, name='show_xml'),
+    path('json/', show_json, name='show_json'),
+]
+```
+
+6. Mengembalikan data berdasaekan ID dalam bentuk XML dan JSON
+- Membuat dua fungsi baru, yaitu `show_xml_by_id` dan `show_json_by_id` yang menerima parameter `request` dan `id` pada berkas `views.py` di direktori `main`
+- Menambahkan variabel `data` yang menyimpan hasil query dari data dengan id tertentu pada `Product`
+```python
+data = Product.objects.filter(pk=id)
+```
+- Menambahkan return function `HttpResponse` yang berisi data hasil query yang sudah diserialisasi menjadi XML dan JSON menggunakan `serializers` dan parameter `content_type="application/xml"`untuk XML dan `content_type="application/json"`untuk JSON
+XML:
+```python
+def show_xml_by_id(request, id):
+    data = Product.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+```
+JSON:
+```python
+def show_json_by_id(request, id):
+    data = Product.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+```
+- Menambahkan import dan path ke URL fungsi `show_xml_by_id` dan `show_json_by_id` pada berkas `urls.py` di direktori `main`
+```python
+from django.urls import path
+from main.views import show_main, add_product, show_xml, show_json, show_xml_by_id, show_json_by_id
+
+app_name = 'main'
+
+urlpatterns = [
+    path('', show_main, name='show_main'),
+    path('add-product', add_product, name='add_product'),
+    path('xml/', show_xml, name='show_xml'),
+    path('json/', show_json, name='show_json'),
+    path('xml/<str:id>/', show_xml_by_id, name='show_xml_by_id'),
+    path('json/<str:id>/', show_json_by_id, name='show_json_by_id'),
+]
+```
+
+7. (Tambahan) Menambahkan fungsi untuk menghapus produk
+- Menambahkan import `get_object_or_404` pada berkas `views.py` di direktori `main` untuk mendapatkan objek dari database dengan parameter tertentu
+```python
+from django.shortcuts import render, redirect, get_object_or_404
+from main.forms import ProductForm
+from main.models import Product
+from django.http import HttpResponse
+from django.core import serializers
+```
+- Membuat fungsi baru bernama `delete_project` yang menerima parameter `request` dan `id` pada berkas `views.py` di direktori `main`
+```python
+def delete_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    product.delete()
+    return redirect('main:show_main')
+```
+- Menambahkan import dan path ke URL fungsi `delete_project` pada berkas `urls.py` di direktori `main`
+```python
+from django.urls import path
+from main.views import show_main, add_product, show_xml, show_json, show_xml_by_id, show_json_by_id, delete_product
+
+app_name = 'main'
+
+urlpatterns = [
+    path('', show_main, name='show_main'),
+    path('add-product', add_product, name='add_product'),
+    path('xml/', show_xml, name='show_xml'),
+    path('json/', show_json, name='show_json'),
+    path('xml/<str:id>/', show_xml_by_id, name='show_xml_by_id'),
+    path('json/<str:id>/', show_json_by_id, name='show_json_by_id'),
+    path('delete-product/<uuid:id>/', delete_product, name='delete_product'),
+]
+```
+- Menambahkan kode untuk menghapus product dalam `{% block content %}` pada berkas `main.html` yang ada di direktori `main/templates`
+```html
+...
+{% if not products %}
+<p>Belum ada data produk pada Grab It Now!.</p>
+{% else %}
+<table>
+  <tr>
+    <th>Nama Produk</th>
+    <th>Harga</th>
+    <th>Deskripsi</th>
+    <th>Stok</th>
+    <th>Kategori</th>
+    <th>Rating</th>
+    <th>Aksi</th>
+  </tr>
+
+  {% for product in products %}
+  <tr>
+    <td>{{product.name}}</td>
+    <td>{{product.price}}</td>
+    <td>{{product.description}}</td>
+    <td>{{product.stock}}</td>
+    <td>{{product.category}}</td>
+    <td>{{product.rating}}</td>
+    <td>
+        <a href="{% url 'main:delete_product' product.id %}">
+          <button>Delete</button>
+        </a>
+      </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+...
+```
+
+## Mengakses keempat URL di poin 2 menggunakan Postman, membuat screenshot dari hasil akses URL pada Postman, dan menambahkannya ke dalam `README.md`.
+`http://localhost:8000/xml/`
+![/xml/](/images/xml.png)
+
+`http://localhost:8000/xml/[id]`
+![/xml_by_id/](/images/xml_by_id.png)
+
+`http://localhost:8000/json/`
+![/json/](/images/json.png)
+
+`http://localhost:8000/json/[id]`
+![/json_by_id/](/images/json_by_id.png)
+
+</details>
+
+<details>
+<summary>Tugas 2</summary>
 
 ## 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 1. Membuat proyek Django baru
@@ -249,3 +689,4 @@ Menurut saya, Django cocok dijadikan permulaan pembelajaran pengembangan perangk
 ## 5. Mengapa model pada Django disebut sebagai ORM?
 Orbject-relational mapping (ORM) adalah teknik pemrograman yang mengonversi atau menghubungkan sistem basis data relasional dengan sistem berbasis objek seperti object-oriented programming.
 Model pada Django disebut sebagai ORM karena memiliki cara kerja dengan menghubungkan atau memetakan objek-objek pada Python ke struktur data basis rasional. ORM ini memungkinkan pengembang/developers untuk berinteraksi dengan basis data relasional menggunakan model berorientasi objek tingkat tinggi (model objek Python), tanpa perlu menulis kueri SQL secara langsung.
+</details>
