@@ -12,7 +12,7 @@ Kelas : PBP D
 <summary>Tugas 3</summary>
 
 ## 1. Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
-Data delivery dalam perimplementasian sebuah platform diperlukan untuk mengirimkan dan menerima informasi antara komponen yang berbeda, seperti user dan server, atau server dan database. Dengan interaksi yang dinamis dan langsung/real-time pada platform, pengguna bisa mendapatkan data yang relevan dan sistem bisa merespons permintaan dari pengguna. Dalam web, data delivery digunakan seperti ketika pengguna mengisi form atau menerima data yang ditampilkan.
+Data delivery dalam pengimplementasian sebuah platform diperlukan untuk mengirimkan dan menerima informasi antara komponen yang berbeda, seperti user dan server, atau server dan database. Dengan interaksi yang dinamis dan langsung/real-time pada platform, pengguna bisa mendapatkan data yang relevan dan sistem bisa merespons permintaan dari pengguna. Dalam web, data delivery digunakan seperti ketika pengguna mengisi form atau menerima data yang ditampilkan.
 
 ## 2. Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?
 Menurut saya, JSON lebih baik dari XML karena beberapa alasan, yaitu:
@@ -77,53 +77,7 @@ TEMPLATES = [
 {% extends 'base.html' %}
 {% block content %}
 <h1>Grab It Now!</h1>
-
-<h5>Name: </h5>
-<p>{{ nama }}<p>
-<h5>NPM: </h5>
-<p>{{ npm }}<p>
-<h5>Class: </h5>
-<p>{{ class }}<p>
-
-<h2>List Produk</h2>
-
-{% if not products %}
-<p>Belum ada data produk pada Grab It Now!.</p>
-{% else %}
-<table>
-  <tr>
-    <th>Nama Produk</th>
-    <th>Harga</th>
-    <th>Deskripsi</th>
-    <th>Stok</th>
-    <th>Kategori</th>
-    <th>Rating</th>
-    <th>Aksi</th>
-  </tr>
-
-  {% for product in products %}
-  <tr>
-    <td>{{product.name}}</td>
-    <td>{{product.price}}</td>
-    <td>{{product.description}}</td>
-    <td>{{product.stock}}</td>
-    <td>{{product.category}}</td>
-    <td>{{product.rating}}</td>
-    <td>
-        <a href="{% url 'main:delete_product' product.id %}">
-          <button>Delete</button>
-        </a>
-      </td>
-  </tr>
-  {% endfor %}
-</table>
-{% endif %}
-
-<br />
-
-<a href="{% url 'main:add_product' %}">
-  <button>Add New Product</button>
-</a>
+...
 {% endblock content %}
 ```
 `{% extends 'base.html' %}` menandakan bahwa saya menggunakan `base.html` sebagai template utama.
