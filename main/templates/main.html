@@ -1,56 +1,63 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Grab it Now!</title>
+{% endblock meta %}
 {% block content %}
-<h1>Grab It Now!</h1>
+{% include 'navbar.html' %}
 
-<h5>Name: </h5>
-<p>{{ nama }}<p>
-<h5>NPM: </h5>
-<p>{{ npm }}<p>
-<h5>Class: </h5>
-<p>{{ class }}<p>
-
-<h5>Sesi terakhir login: {{ last_login }}</h5>
-
-<h2>List Produk</h2>
-
-{% if not products %}
-<p>Belum ada data produk pada Grab It Now!.</p>
-{% else %}
-<table>
-  <tr>
-    <th>Nama Produk</th>
-    <th>Harga</th>
-    <th>Deskripsi</th>
-    <th>Stok</th>
-    <th>Kategori</th>
-    <th>Rating</th>
-    <th>Aksi</th>
-  </tr>
-
-  {% for product in products %}
-  <tr>
-    <td>{{product.name}}</td>
-    <td>{{product.price}}</td>
-    <td>{{product.description}}</td>
-    <td>{{product.stock}}</td>
-    <td>{{product.category}}</td>
-    <td>{{product.rating}}</td>
-    <td>
-        <a href="{% url 'main:delete_product' product.id %}">
-          <button>Delete</button>
+<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-[#F2EAD3] flex flex-col">
+  <!-- User Information Section -->
+  <div class="about-section py-16">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-4xl font-bold text-gray-900 mb-1">Welcome to Grab It Now!</h2>
+        <p class="text-gray-700 text-lg mb-8">
+            <span class="text-sm">A shop by</span> <span class="font-semibold text-[#2D3A36] text-sm">{{ nama }}</span> 
+            <span class="text-sm">with ID</span> <span class="font-semibold text-[#2D3A36] text-sm">{{ npm }}</span> 
+            <span class="text-sm">from</span> <span class="font-semibold text-[#2D3A36] text-sm">{{ class }}</span>.
+        </p>
+        <!-- Taglines -->
+        <div class="mb-4">
+            <p class="text-[#2D3A36] text-md font-semibold">Your dream product is just a click away!</p>
+            <p class="text-[#2D3A36] text-md font-semibold">Grab it now and elevate your shopping experience! 🌟</p>
+        </div>
+        <a href="{% url 'main:show_main' %}#product_list" class="bg-[#789395] hover:bg-[#94B49F] text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+            Explore Products
         </a>
-      </td>
-  </tr>
-  {% endfor %}
-</table>
-{% endif %}
+    </div>
+  </div>
 
-<br />
+  <!-- Product List Section -->
+  <div id="product_list" class="my-5 text-center">
+    <h2 class="text-2xl font-bold text-[#2D3A36] mb-6">Latest Products</h2>
 
-<a href="{% url 'main:add_product' %}">
-  <button>Add New Product</button>
-</a>
-<a href="{% url 'main:logout' %}">
-  <button>Logout</button>
-</a>
+    {% if not products %}
+    <div class="flex flex-col items-center justify-center min-h-[30vh]"> <!-- Adjusted for centering -->
+        <img src="{% static 'image/sedih-banget.png' %}" alt="Sad face" class="w-32 h-32 mb-4"/>
+        <p class="text-gray-600 mt-4">It looks like we don't have any products yet! Come back to shop when our products are ready! 🛍️</p>
+    </div>
+    {% else %}
+      <!-- Centering the product grid container -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
+        {% for product in products %}
+          {% include 'card_product.html' with product=product %}
+        {% endfor %}
+      </div>      
+    {% endif %}
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="mt-6 flex justify-center">
+    <a href="{% url 'main:add_product' %}" class="bg-[#789395] hover:bg-[#5B7B7A] text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+      Add New Product
+    </a>
+  </div>
+
+  <!-- Last Login -->
+  <div class="px-3 mb-4 mt-5 text-center">
+    <h5 class="text-[#94B49F]">Last Login: {{ last_login }}</h5>
+  </div>
+</div>
+
 {% endblock content %}

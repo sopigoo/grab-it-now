@@ -1,10 +1,10 @@
 import datetime
-from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
+from django.shortcuts import render, redirect, reverse
 from main.forms import ProductForm
 from main.models import Product
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core import serializers
-from django.urls import reverse
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -37,10 +37,27 @@ def add_product(request):
     return render(request, "add_product.html", context)
 
 def delete_product(request, id):
-    product = get_object_or_404(Product, pk=id)
-    if product.user == request.user:
-        product.delete()
-    return redirect('main:show_main')
+    # Get product by id
+    product = Product.objects.get(pk = id)
+    # Delete product
+    product.delete()
+    # Return to main page
+    return HttpResponseRedirect(reverse('main:show_main'))
+
+def edit_product(request, id):
+    #Get product by id
+    product = Product.objects.get(pk = id)
+
+    # Set product as the instance of the form
+    form = ProductForm(request.POST or None, instance=product)
+
+    if form.is_valid() and request.method == "POST":
+        # Save form and go back to main page
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_product.html", context)
 
 def show_xml(request):
     data = Product.objects.all()

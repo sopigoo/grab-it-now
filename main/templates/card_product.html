@@ -1,0 +1,54 @@
+<div class="relative bg-[#F9F6E9] border border-gray-300 rounded-lg shadow-lg overflow-hidden p-4 transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+    <!-- Product Name -->
+    <h3 class="text-xl font-bold text-center text-[#3D5B45] mb-1">{{ product.name }}</h3>
+    <p class="text-sm text-center text-[#588157] mb-1">{{ product.category }}</p>
+    <hr class="border-t-2 border-[#A3B18A] mb-2">
+
+    <!-- Product Price -->
+    <div class="text-left">
+      <span class="text-lg font-bold text-[#A3B18A]">Rp{{ product.price }}</span>
+    </div>
+
+    <!-- Product Description -->
+    <p class="text-left text-sm text-gray-600 mt-2">{{ product.description }}</p>
+
+    <!-- Stock Information and Rating -->
+    <div class="flex justify-between mt-4">
+        <div class="text-right {% if product.stock > 0 %}text-[#588157]{% else %}text-red-500{% endif %}">
+            {% if product.stock > 0 %}
+                <span class="font-semibold">In Stock: {{ product.stock }}</span>
+            {% else %}
+                <span class="font-semibold">Out of Stock</span>
+            {% endif %}
+        </div>
+        <div class="flex items-center text-yellow-300">
+            {% if product.rating >= 1 %}
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9.049 3.3a1 1 0 011.902 0l1.357 4.18a1 1 0 00.95.69h4.392a1 1 0 01.591 1.81l-3.546 2.576a1 1 0 00-.363 1.118l1.357 4.18a1 1 0 01-1.541 1.118L10 15.25l-3.546 2.576a1 1 0 01-1.541-1.118l1.357-4.18a1 1 0 00-.363-1.118L2.361 9.98a1 1 0 01.591-1.81h4.392a1 1 0 00.95-.69L9.049 3.3z"/>
+                </svg>
+            {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" opacity="0.5">  <!-- Empty star -->
+                    <path d="M9.049 3.3a1 1 0 011.902 0l1.357 4.18a1 1 0 00.95.69h4.392a1 1 0 01.591 1.81l-3.546 2.576a1 1 0 00-.363 1.118l1.357 4.18a1 1 0 01-1.541 1.118L10 15.25l-3.546 2.576a1 1 0 01-1.541-1.118l1.357-4.18a1 1 0 00-.363-1.118L2.361 9.98a1 1 0 01.591-1.81h4.392a1 1 0 00.95-.69L9.049 3.3z"/>
+                </svg>
+            {% endif %}
+            
+            {% if product.rating %}  <!-- Only display the text if rating is available -->
+                <p class="ml-2 text-[#344E41] font-semibold">{{ product.rating|floatformat:2 }} / 5.00</p>  <!-- Display rating with one decimal -->
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Action Links -->
+    <div class="flex justify-end mt-4">
+        <div class="mr-4">
+            <a href="{% url 'main:edit_product' product.pk %}" class="text-[#344E41] hover:underline transition duration-300">
+              Edit
+            </a>
+        </div>
+        <div>
+            <a href="{% url 'main:delete_product' product.pk %}" class="text-red-500 hover:underline transition duration-300">
+              Delete
+            </a>
+        </div>
+    </div>
+</div>

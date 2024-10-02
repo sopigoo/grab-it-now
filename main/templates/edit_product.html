@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block meta %}
-<title>Add New Product</title>
+<title>Edit Product</title>
 {% endblock meta %}
 
 {% block content %}
@@ -9,13 +10,13 @@
 
 <div class="flex flex-col min-h-screen bg-[#F2EAD3]">
   <div class="container mx-auto px-4 py-8 mt-16 max-w-xl">
-    <h1 class="text-3xl font-bold text-center mb-8 text-[#2D3A36]">Add New Product</h1>
+    <h1 class="text-3xl font-bold text-center mb-8 text-[#2D3A36]">Edit Product</h1>
 
     <div class="flex justify-start mb-4">
-      <a href="{% url 'main:show_main' %}" class="text-[#789395] hover:text-[#94B49F] text-lg font-semibold">
-        &lt; Back to Home
-      </a>
-    </div>
+        <a href="{% url 'main:show_main' %}#product_list" class="text-[#789395] hover:text-[#94B49F] text-lg font-semibold">
+          &lt; Return to Product Catalog
+        </a>
+      </div>
 
     <div class="bg-[#B4CFB0] shadow-md rounded-lg p-6 form-style">
       <form method="POST" class="space-y-6">
@@ -38,7 +39,7 @@
         {% endfor %}
         <div class="flex justify-center mt-6">
           <button type="submit" class="bg-[#789395] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#94B49F] transition duration-300 ease-in-out w-full">
-            Add Product
+            Edit Product
           </button>
         </div>
       </form>
